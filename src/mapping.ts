@@ -31,12 +31,12 @@ export function handleStaked(event: Staked): void {
   // example, the contract that has emitted the event can be connected to
   // with:
   //
-  // let contract = Contract.bind(event.address)
+  let contract = staking.bind(event.address)
   //
   // The following functions can then be called on this contract to access
   // state variables and other data:
   //
-  // - contract.balanceOfStake(...)
+  contract.balanceOfStake(entity.from)
   // - contract.checkWithdrawInfo(...)
   // - contract.tokenAddress(...)
   // - contract.totalStaked(...)
@@ -61,6 +61,7 @@ export function handleUnstaked(event: Unstaked): void {
 }
 
 export function handleBalanceOfStake(eventOfStake: Staked, eventOfUnstaked: Unstaked): void {
+  // let entity = StakedEntity.load(eventOfStake.transaction.hash.toHex())
   // let entityBalanceOfStake = BalanceOfStake.load(eventOfStake.transaction.from.toHex())
 
   // // Entities only exist after they have been saved to the store;
@@ -85,12 +86,12 @@ export function handleBalanceOfStake(eventOfStake: Staked, eventOfUnstaked: Unst
   // example, the contract that has emitted the event can be connected to
   // with:
   //
-  let stakingContract = staking.bind(eventOfStake.address)
+  // let stakingContract = staking.bind(eventOfStake.address)
   //
   // The following functions can then be called on this contract to access
   // state variables and other data:
   //  
-  stakingContract.balanceOfStake(eventOfStake.params.from)
+  // stakingContract.balanceOfStake(eventOfStake.params.from)
   // - contract.checkWithdrawInfo(...)
   // - contract.tokenAddress(...)
   // - contract.totalStaked(...)
