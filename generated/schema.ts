@@ -18,7 +18,6 @@ export class StakedEntity extends Entity {
 
     this.set("from", Value.fromBytes(Bytes.empty()));
     this.set("amount", Value.fromBigInt(BigInt.zero()));
-    this.set("balanceOfStake", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -63,15 +62,6 @@ export class StakedEntity extends Entity {
 
   set amount(value: BigInt) {
     this.set("amount", Value.fromBigInt(value));
-  }
-
-  get balanceOfStake(): BigInt {
-    let value = this.get("balanceOfStake");
-    return value!.toBigInt();
-  }
-
-  set balanceOfStake(value: BigInt) {
-    this.set("balanceOfStake", Value.fromBigInt(value));
   }
 }
 

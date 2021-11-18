@@ -14,13 +14,13 @@ export function handleStaked(event: Staked): void {
     entity = new StakedEntity(event.transaction.hash.toHex())
   }
   
-  let stakingContract = staking.bind(event.address)
-  let callResult = stakingContract.try_balanceOfStake(event.params.from)
-  if (callResult.reverted) {
-     log.info("getBalance reverted", [])
-  } else {
-     entity.balanceOfStake = callResult.value
-  }
+  // let stakingContract = staking.bind(event.address)
+  // let callResult = stakingContract.try_balanceOfStake(event.params.from)
+  // if (callResult.reverted) {
+  //    log.info("getBalance reverted", [])
+  // } else {
+  //    entity.balanceOfStake = callResult.value
+  // }
   // BigInt and BigDecimal math are supported
   // Entity fields can be set based on event parameters
   entity.from = event.params.from
@@ -67,41 +67,4 @@ export function handleUnstaked(event: Unstaked): void {
 
   // Entities can be written to the store with `.save()`
   entity.save()
-}
-
-export function handleBalanceOfStake(eventOfStake: Staked, eventOfUnstaked: Unstaked): void {
-  // let entity = StakedEntity.load(eventOfStake.transaction.hash.toHex())
-  // let entityBalanceOfStake = BalanceOfStake.load(eventOfStake.transaction.from.toHex())
-
-  // // Entities only exist after they have been saved to the store;
-  // // `null` checks allow to create entities on demand
-  // if (!entityBalanceOfStake) {
-  //   entityBalanceOfStake = new BalanceOfStake(eventOfStake.transaction.from.toHex())
-  // }
-
-  // // BigInt and BigDecimal math are supported
-  // // Entity fields can be set based on event parameters
-  // // entityStaked.from = eventOfStake.params.from
-  // // entityStaked.amount = eventOfStake.params.amount
-
-  // // entityUnstaked.from = eventOfUnstaked.params.from
-  // // entityUnstaked.amount = eventOfUnstaked.params.amount
-  // entityBalanceOfStake.address = eventOfStake.params.from
-  // entityBalanceOfStake.amount = eventOfStake.params.amount.minus(eventOfUnstaked.params.amount)
-
-  // // Entities can be written to the store with `.save()`
-  // entityBalanceOfStake.save()
-    // It is also possible to access smart contracts from mappings. For
-  // example, the contract that has emitted the event can be connected to
-  // with:
-  //
-  // let stakingContract = staking.bind(eventOfStake.address)
-  //
-  // The following functions can then be called on this contract to access
-  // state variables and other data:
-  //  
-  // stakingContract.balanceOfStake(eventOfStake.params.from)
-  // - contract.checkWithdrawInfo(...)
-  // - contract.tokenAddress(...)
-  // - contract.totalStaked(...)
 }
