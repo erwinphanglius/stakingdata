@@ -1,30 +1,30 @@
 import { Address, BigInt, log } from "@graphprotocol/graph-ts"
 import { staking, Staked, Unstaked  } from "../generated/staking/staking"
-import { User ,StakedEntity, UnstakedEntity } from "../generated/schema"
+import { StakedEntity, UnstakedEntity } from "../generated/schema"
 
-export function addTotalDepositedByUser(address: Address, newValue: BigInt): void {
-  let id = address.toHexString();
-  let user = User.load(id);
-  if (user == null) {
-    user = new User(id);
-    user.address = address;
-    user.totalValue = BigInt.fromI32(0);
-  }
-  user.totalValue = user.totalValue.plus(newValue);
-  user.save();
-}
+// export function addTotalDepositedByUser(address: Address, newValue: BigInt): void {
+//   let id = address.toHexString();
+//   let user = User.load(id);
+//   if (user == null) {
+//     user = new User(id);
+//     user.address = address;
+//     user.totalValue = BigInt.fromI32(0);
+//   }
+//   user.totalValue = user.totalValue.plus(newValue);
+//   user.save();
+// }
 
-export function substractTotalDepositedByUser(address: Address, newValue: BigInt): void {
-  let id = address.toHexString();
-  let user = User.load(id);
-  if (user == null) {
-    user = new User(id);
-    user.address = address;
-    user.totalValue = BigInt.fromI32(0);
-  }
-  user.totalValue = user.totalValue.minus(newValue);
-  user.save();
-}
+// export function substractTotalDepositedByUser(address: Address, newValue: BigInt): void {
+//   let id = address.toHexString();
+//   let user = User.load(id);
+//   if (user == null) {
+//     user = new User(id);
+//     user.address = address;
+//     user.totalValue = BigInt.fromI32(0);
+//   }
+//   user.totalValue = user.totalValue.minus(newValue);
+//   user.save();
+// }
 
 export function handleStaked(event: Staked): void {
   // Entities can be loaded from the store using a string ID; this ID
@@ -36,7 +36,7 @@ export function handleStaked(event: Staked): void {
   if (!entity) {
     entity = new StakedEntity(event.transaction.hash.toHex())
   }
-  addTotalDepositedByUser(event.params.from, event.params.amount);
+  // addTotalDepositedByUser(event.params.from, event.params.amount);
   
   // BigInt and BigDecimal math are supported
   // Entity fields can be set based on event parameters
@@ -77,7 +77,7 @@ export function handleUnstaked(event: Unstaked): void {
   if (!entity) {
     entity = new UnstakedEntity(event.transaction.from.toHex())
   }
-  substractTotalDepositedByUser(event.params.from, event.params.amount);
+  // substractTotalDepositedByUser(event.params.from, event.params.amount);
 
   // BigInt and BigDecimal math are supported
   // Entity fields can be set based on event parameters
