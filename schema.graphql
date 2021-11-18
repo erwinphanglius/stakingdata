@@ -2,6 +2,7 @@ type StakedEntity @entity {
   id: ID!
   from: Bytes! # address
   amount: BigInt! # uint256
+  balanceOfStake: BigInt! #uint256
 }
 
 type UnstakedEntity @entity {
