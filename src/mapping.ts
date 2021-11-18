@@ -1,6 +1,6 @@
 import { BigInt } from "@graphprotocol/graph-ts"
 import { staking, Staked, Unstaked } from "../generated/staking/staking"
-import { StakedEntity, UnstakedEntity } from "../generated/schema"
+import { BalanceOfStake, StakedEntity, UnstakedEntity } from "../generated/schema"
 
 export function handleStaked(event: Staked): void {
   // Entities can be loaded from the store using a string ID; this ID
@@ -58,4 +58,31 @@ export function handleUnstaked(event: Unstaked): void {
 
   // Entities can be written to the store with `.save()`
   entity.save()
+}
+
+export function handleBalanceOfStake(eventOfStake: Staked, eventOfUnstaked: Unstaked): void {
+  let entityBalanceOfStake = BalanceOfStake.load(eventOfStake.transaction.from.toHex())
+  let entityStaked = StakedEntity.load(eventOfStake.transaction.from.toHex())
+  let entityUnstaked = UnstakedEntity.load(eventOfUnstaked.transaction.from.toHex())
+
+  // Entities only exist after they have been saved to the store;
+  // `null` checks allow to create entities on demand
+  if (!entityBalanceOfStake) {
+    entityBalanceOfStake = new BalanceOfStake(eventOfStake.transaction.from.toHex())
+    entityStaked = new StakedEntity(eventOfStake.transaction.from.toHex())
+    entityUnstaked = new UnstakedEntity(eventOfUnstaked.transaction.from.toHex())
+  }
+
+  // BigInt and BigDecimal math are supported
+  // Entity fields can be set based on event parameters
+  // entityStaked.from = eventOfStake.params.from
+  // entityStaked.amount = eventOfStake.params.amount
+
+  // entityUnstaked.from = eventOfUnstaked.params.from
+  // entityUnstaked.amount = eventOfUnstaked.params.amount
+  entityBalanceOfStake.address = eventOfStake.params.from
+  entityBalanceOfStake.amount = eventOfStake.params.amount.minus(eventOfUnstaked.params.amount)
+
+  // Entities can be written to the store with `.save()`
+  entityBalanceOfStake.save()
 }
