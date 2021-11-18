@@ -1,6 +1,6 @@
 import { BigInt, log } from "@graphprotocol/graph-ts"
 import { staking, Staked, Unstaked  } from "../generated/staking/staking"
-import { BalanceOfStake, StakedEntity, UnstakedEntity } from "../generated/schema"
+import { StakedEntity, UnstakedEntity } from "../generated/schema"
 
 
 export function handleStaked(event: Staked): void {
