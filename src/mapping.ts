@@ -72,6 +72,5 @@ export function handleUnstaked(event: Unstaked): void {
   entity.from = event.params.from
   entity.amount = event.params.amount
 
-  // Entities can be written to the store with `.save()`
   entity.save()
 }
