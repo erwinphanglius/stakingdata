@@ -19,7 +19,6 @@ export function handleStaked(event: Staked): void {
   entity.amount = event.params.amount
 
   // Entities can be written to the store with `.save()`
-  entity.save()
 
   // Note: If a handler doesn't require existing field values, it is faster
   // _not_ to load the entity from the store. Instead, create it fresh with
@@ -36,10 +35,12 @@ export function handleStaked(event: Staked): void {
   // The following functions can then be called on this contract to access
   // state variables and other data:
   //
-  contract.balanceOfStake(event.params.from)
+  let a = contract.balanceOfStake(event.params.from)
+  entity.balanceOfStake = a
   // - contract.checkWithdrawInfo(...)
   // - contract.tokenAddress(...)
   // - contract.totalStaked(...)
+  entity.save()
 }
 
 export function handleUnstaked(event: Unstaked): void {
