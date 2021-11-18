@@ -10,9 +10,3 @@ type UnstakedEntity @entity {
   from: Bytes! # address
   amount: BigInt! # uint256
 }
-
-type BalanceOfStake @entity {
-  id: ID!
-  address: Bytes! # address
-  amount: BigInt! # uint256
-}

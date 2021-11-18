@@ -1,18 +1,26 @@
-import { BigInt } from "@graphprotocol/graph-ts"
+import { BigInt, log } from "@graphprotocol/graph-ts"
 import { staking, Staked, Unstaked  } from "../generated/staking/staking"
 import { BalanceOfStake, StakedEntity, UnstakedEntity } from "../generated/schema"
+
 
 export function handleStaked(event: Staked): void {
   // Entities can be loaded from the store using a string ID; this ID
   // needs to be unique across all entities of the same type
   let entity = StakedEntity.load(event.transaction.hash.toHex())
-
+  
   // Entities only exist after they have been saved to the store;
   // `null` checks allow to create entities on demand
   if (!entity) {
     entity = new StakedEntity(event.transaction.hash.toHex())
   }
-
+  
+  let stakingContract = staking.bind(event.address)
+  let callResult = stakingContract.try_balanceOfStake(event.params.from)
+  if (callResult.reverted) {
+     log.info("getBalance reverted", [])
+  } else {
+     entity.balanceOfStake = callResult.value
+  }
   // BigInt and BigDecimal math are supported
   // Entity fields can be set based on event parameters
   entity.from = event.params.from
@@ -30,13 +38,13 @@ export function handleStaked(event: Staked): void {
   // example, the contract that has emitted the event can be connected to
   // with:
   //
-  let contract = staking.bind(event.address)
+  // let contract = staking.bind(event.address)
   //
   // The following functions can then be called on this contract to access
   // state variables and other data:
   //
-  let a = contract.balanceOfStake(event.params.from)
-  entity.balanceOfStake = a
+  // let a = contract.balanceOfStake(event.params.from)
+  // entity.balanceOfStake = a
   // - contract.checkWithdrawInfo(...)
   // - contract.tokenAddress(...)
   // - contract.totalStaked(...)
