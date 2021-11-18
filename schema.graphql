@@ -1,3 +1,9 @@
+type User @entity {
+  id: ID!
+  address: Bytes! #address
+  totalValue: BigInt! #amount
+}
+
 type StakedEntity @entity {
   id: ID!
   from: Bytes! # address
