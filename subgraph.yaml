@@ -6,9 +6,9 @@ dataSources:
     name: staking
     network: chapel
     source:
-      address: "0x69Dda9a44d9dccf43E577C6E19e1fDfe8a087993"
+      address: "0x24E5b16fC2095B37B17597883A1bcDFac25Afb2D"
       abi: staking
-      startBlock: 14220434
+      startBlock: 14210581
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
