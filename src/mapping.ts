@@ -1,7 +1,18 @@
-import { BigInt, log } from "@graphprotocol/graph-ts"
+import { Address, BigInt, log } from "@graphprotocol/graph-ts"
 import { staking, Staked, Unstaked  } from "../generated/staking/staking"
-import { StakedEntity, UnstakedEntity } from "../generated/schema"
+import { User ,StakedEntity, UnstakedEntity } from "../generated/schema"
 
+export function updateTotalDepositedByUser(address: Address, oldValue: BigInt, newValue: BigInt): void {
+  let id = address.toHexString();
+  let user = User.load(id);
+  if (user == null) {
+    user = new User(id);
+    user.address = address;
+    user.totalValue = BigInt.fromI32(0);
+  }
+  user.totalValue = user.totalValue.minus(oldValue).plus(newValue);
+  user.save();
+}
 
 export function handleStaked(event: Staked): void {
   // Entities can be loaded from the store using a string ID; this ID
@@ -13,19 +24,15 @@ export function handleStaked(event: Staked): void {
   if (!entity) {
     entity = new StakedEntity(event.transaction.hash.toHex())
   }
+  updateTotalDepositedByUser(event.params.from, entity.amount, event.params.amount);
   
-  // let stakingContract = staking.bind(event.address)
-  // let callResult = stakingContract.try_balanceOfStake(event.params.from)
-  // if (callResult.reverted) {
-  //    log.info("getBalance reverted", [])
-  // } else {
-  //    entity.balanceOfStake = callResult.value
-  // }
   // BigInt and BigDecimal math are supported
   // Entity fields can be set based on event parameters
   entity.from = event.params.from
   entity.amount = event.params.amount
+  entity.save()
 
+  
   // Entities can be written to the store with `.save()`
 
   // Note: If a handler doesn't require existing field values, it is faster
@@ -48,7 +55,6 @@ export function handleStaked(event: Staked): void {
   // - contract.checkWithdrawInfo(...)
   // - contract.tokenAddress(...)
   // - contract.totalStaked(...)
-  entity.save()
 }
 
 export function handleUnstaked(event: Unstaked): void {
@@ -59,6 +65,7 @@ export function handleUnstaked(event: Unstaked): void {
   if (!entity) {
     entity = new UnstakedEntity(event.transaction.from.toHex())
   }
+  updateTotalDepositedByUser(event.params.from, entity.amount, event.params.amount);
 
   // BigInt and BigDecimal math are supported
   // Entity fields can be set based on event parameters
