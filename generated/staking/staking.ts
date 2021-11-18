@@ -11,9 +11,6 @@ import {
 } from "@graphprotocol/graph-ts";
 
 export class Staked extends ethereum.Event {
-  from(from: any) {
-    throw new Error("Method not implemented.");
-  }
   get params(): Staked__Params {
     return new Staked__Params(this);
   }
