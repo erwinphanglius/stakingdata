@@ -5,12 +5,12 @@ import { StakedEntity, UnstakedEntity } from "../generated/schema"
 export function handleStaked(event: Staked): void {
   // Entities can be loaded from the store using a string ID; this ID
   // needs to be unique across all entities of the same type
-  let entity = StakedEntity.load(event.transaction.from.toHex())
+  let entity = StakedEntity.load(event.transaction.hash.toHex())
 
   // Entities only exist after they have been saved to the store;
   // `null` checks allow to create entities on demand
   if (!entity) {
-    entity = new StakedEntity(event.transaction.from.toHex())
+    entity = new StakedEntity(event.transaction.hash.toHex())
   }
 
   // BigInt and BigDecimal math are supported
