@@ -36,7 +36,7 @@ export function handleStaked(event: Staked): void {
   // The following functions can then be called on this contract to access
   // state variables and other data:
   //
-  contract.balanceOfStake(entity.from)
+  contract.balanceOfStake(event.params.from)
   // - contract.checkWithdrawInfo(...)
   // - contract.tokenAddress(...)
   // - contract.totalStaked(...)
