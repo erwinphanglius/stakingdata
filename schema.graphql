@@ -1,7 +1,7 @@
 type User @entity {
   id: ID!
-  address: Bytes! #address
-  totalValue: BigInt! #amount
+  address: Bytes! # address
+  totalValue: BigInt! # amount
 }
 
 type StakedEntity @entity {
